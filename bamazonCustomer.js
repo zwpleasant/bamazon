@@ -1,6 +1,31 @@
 // step 1: load npm packages and connect to database
+var inquirer = require("inquirer");
+var mysql = require("mysql");
 
-// step 2: display all the current products
+var connection = mysql.createConnection({
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: "Tucker10!",
+    database: "bamazon"
+});
+
+connection.connect(function (error) {
+    if (error) throw (error);
+    // call the function that displays the current products/inventories
+    readProducts();
+});
+
+// step 2: display all the current products/inventories
+function readProducts() {
+    console.log("Selecting all product... \n");
+    connection.query("SELECT * FROM product", function (error, res){
+        if (error) throw error;
+        // display the products with the SELECT statement
+        console.log(res);
+        connection.end();
+    });
+}
 
 // stept 3: prompt user for id of product they would like to buy
 
