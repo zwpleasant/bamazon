@@ -3,7 +3,7 @@ CREATE database bamazon;
 
 USE bamazon;
 
-CREATE TABLE products (
+CREATE TABLE product (
   item_id INTEGER NOT NULL AUTO_INCREMENT,
   product_name VARCHAR(100) NULL,
   department_name VARCHAR(100) NULL,
