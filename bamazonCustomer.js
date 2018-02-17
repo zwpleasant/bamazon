@@ -14,6 +14,7 @@ connection.connect(function (error) {
     if (error) throw (error);
     // call the function that displays the current products/inventories
     readProducts();
+    startOrder();
 });
 
 // step 2: display all the current products/inventories
@@ -27,11 +28,27 @@ function readProducts() {
     });
 }
 
-// stept 3: prompt user for id of product they would like to buy
+// stept 3: prompt user for id of product they would like to buy and amount they want to buy
+function startOrder() {
+    inquirer.prompt([
+        {
+            name: "userChoice",
+            type: "list",
+            message: "Welcome to Bamazon. Please make a selection:",
+            choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+        },
+        {
+            name: "amount",
+            type: "input",
+            message: "How many do you want?"
+        }
+    ]).then(function (answers) {
+        console.log(answers.userChoice);
+        console.log(answers.amount);
+    })
+}
 
-// step 4:prompt user for amount of the product they want to buy
-
-// step 5: take in both parameters (product id & amount), then check to see (if-else statement?) if they is a sufficient quantity
+// step 4: take in both parameters (product id & amount), then check to see (if-else statement?) if they is a sufficient quantity
     // if sufficient quantity
         // update SQL database with current amount
         // show total cost to customer for order
