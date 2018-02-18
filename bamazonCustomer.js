@@ -27,7 +27,7 @@ function readProducts() {
     });
 }
 
-// stept 3: prompt user for id of product they would like to buy and amount they want to buy
+// step 3: prompt user for id of product they would like to buy and amount they want to buy. Then check the database against the amount and either run purchase or tell them insufficient quantity.
 function order() {
     inquirer.prompt([{
         name: "userChoice",
@@ -53,14 +53,8 @@ function order() {
                     console.log(`Thanks for your purchase, your order total is: $${results[0].price * answer.amount}`);
                 });
             } else {
-                console.log("Sorry, we don't have that much in stock. Please try another amount.");
+                console.log("Sorry, insufficient quantiy in stock. Please try another amount.");
             }
         });
     });
 };
-
-// step 4: take in both parameters (product id & amount), then check to see (if-else statement?) if they is a sufficient quantity
-    // if sufficient quantity
-        // update SQL database with current amount
-        // show total cost to customer for order
-    // else display "Insufficient Quantitity!"
