@@ -23,7 +23,6 @@ function readProducts() {
         if (error) throw error;
         // display the products with the SELECT statement
         console.log(res);
-        connection.end();
         order();
     });
 }
@@ -42,9 +41,21 @@ function order() {
         default: 1,
         message: "Enter the quantity"
     }
-    ]).then(function (answers) {
-        console.log(answers.userChoice);
-        console.log(answers.amount);
+    ]).then(function (answer) {
+        console.log(answer.userChoice);
+        console.log(answer.amount);
+        connection.query(`SELECT product_name, price, stock_quantity FROM product WHERE item_id=${answer.userChoice}`, function (error, results){
+            if (error) throw error;
+            else if (results[0].stock_quantity >= answer.amount) {
+                connection.query("UPDATE product SET stock_quantity=stock_quantity-? WHERE ?", [answer.amount,{item_id: answer.userChoice}],
+                function (error) {
+                    if (error) throw (error);
+                    console.log(`Thanks for your purchase, your order total is: $${results[0].price * answer.amount}`);
+                });
+            } else {
+                console.log("Sorry, we don't have that much in stock. Please try another amount.");
+            }
+        });
     });
 };
 
