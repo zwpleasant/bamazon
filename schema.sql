@@ -11,3 +11,10 @@ CREATE TABLE product (
   stock_quantity INTEGER(10) NULL,
   PRIMARY KEY (item_id)
 );
+
+CREATE TABLE department (
+  department_id INTEGER NOT NULL,
+  department_name VARCHAR(100) NULL,
+  over_head_costs INTEGER(10) NULL,
+  PRIMARY KEY (department_id)
+);
