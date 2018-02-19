@@ -35,9 +35,11 @@ function managerOptions() {
         } else if (answer.managerChoice === "Add to Inventory") {
             console.log("Adding to inventory");
             // function to add inventory
+            addInventory();
         } else {
             console.log("Adding new product");
             // function to add new product
+            addProduct();
         }
     });
 };
@@ -61,9 +63,65 @@ function viewLowInventory() {
 }
 
 function addInventory() {
-
-}
+    inquirer.prompt([{
+        name: "managerChoice",
+        type: "list",
+        message: "Select the item to update",
+        choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    },
+    {
+        name: "amount",
+        type: "input",
+        default: 1,
+        message: "Enter the quantity"
+    }
+    ]).then(function (answer) {
+        console.log(answer.managerChoice);
+        console.log(answer.amount);
+        connection.query(`SELECT product_name, stock_quantity FROM product WHERE item_id=${answer.managerChoice}`, function (error, results) {
+            if (error) throw error;
+            else if (results[0].stock_quantity >= answer.amount) {
+                connection.query("UPDATE product SET stock_quantity=stock_quantity+? WHERE ?", [answer.amount,{item_id: answer.managerChoice}],
+                function (error) {
+                    if (error) throw (error);
+                    console.log("Thanks for updating the inventory");
+                });
+            }
+        });
+    });
+};
 
 function addProduct() {
-
+    return inquirer.prompt([
+        {
+            name: "productName",
+            type: "input",
+            message: "Enter product name"
+        },
+        {
+            name: "departmentName",
+            type: "list",
+            message: "Enter department name",
+            choices: ["Electronics", "Sports & Outdoors", "Books", "Home & Garden", "Toys & Games"]
+        },
+        {
+            name: "price",
+            type: "input",
+            message: "Enter a price"
+        },
+        {
+            name: "stockQuantity",
+            type: "input",
+            message: "Enter an amount"
+        }
+    ]).then(function (answers) {
+        connection.query(
+            `INSERT INTO product (product_name, department_name, price, stock_quantity)
+            VALUES ("${answers.productName}", "${answers.departmentName}", ${answers.price}, ${answers.stockQuantity})`,
+            function(error) {
+                if (error) throw (error);
+                console.log("New product has been added");
+            }
+        );
+    });
 }
